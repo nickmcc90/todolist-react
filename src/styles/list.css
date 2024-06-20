@@ -17,9 +17,18 @@ ul {
   padding: 10px;
   margin-bottom: 15px;
   margin-left: -30px;
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .margin-styling {
   margin-left: 15px;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  width: 60px;
+  margin-right: 20px;
 }
