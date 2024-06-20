@@ -4,16 +4,17 @@ import Todolist from './components/todolist'
 
 function App() {
 
-  const [todos, setTodos] = useState([    // using a useState variable because we want to interact with the list of todos via user input
-    'Go to work',
-    'Kiss Zack good morning',
-    'Go out to a house club'
-  ])
+  const [todos, setTodos] = useState([]);   // using a useState variable because we want to interact with the list of todos via user input
 
   const [todoValue, setToDoValue] = useState('');   // we have a dynamic variable associated with the input value
 
+  function persistData(newList) { // Here we take any new changes done to the list and put in it storage. The argument is meant to take the last availabe version of the list, so this function will be run after the add, delete, and edit functions.
+    localStorage.setItem('todos', JSON.stringify({ todos: newList })) // This storage is different from the actual value of todos because this is in storage.
+  }
+
   function handleAddTodos (addedTodo) {   // the syntax below allows us to have an array with the previous todos plus a new one, then we set the state of the todo list
     const newTodos = [...todos, addedTodo]
+    persistData(newTodos);
     setTodos(newTodos);
   }
 
@@ -21,6 +22,7 @@ function App() {
     const newTodos = todos.filter((todo, todoIndex) => {
       return todoIndex !== index
     })
+    persistData(newTodos);
     setTodos(newTodos);
   }
 
@@ -31,7 +33,19 @@ function App() {
   }
 
   {/* The arrow funciton runs when a variable changes in the second argument array in useEffect. If there is nothing, the function runs when the page is loaded/refreshed. */}
-  useEffect(() => {}, [])
+  useEffect(() => {
+    if(!localStorage) { // if local Storage doesn't exist, then show the blank page.
+      return
+    }
+
+    let localTodos = localStorage.getItem('todos'); // grabbing the todo array from storage
+    if(!localTodos) {       // if the todo array from storage does not exist, we return a blank page
+      return
+    }
+
+    localTodos = JSON.parse(localTodos).todos   // we get to this point in the code if localTodos exists, so we JSON parse it.
+    setTodos(localTodos);   // we set the initial value of the todos to the local storage value.
+  }, [])
 
   return (
     <main>
@@ -61,6 +75,5 @@ List and card both want access to the to-do list, so we define the list in the p
 to both of them in App.jsx.
 
 
-In this version, we also want to fix all of our changes when we refresh the page. We do this using local storage.
-The react hook we use for this is useEffect. In the branch 'localstorage branch', we show this change to the code.
+This is the final version of the app! This should be merged with the main branch from final-branch-3.
 */
