@@ -1,0 +1,25 @@
+ul {
+  list-style-type: none;
+}
+
+.inter {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0;
+}
+
+.list-style {
+  background-color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-left: -30px;
+
+}
+
+.margin-styling {
+  margin-left: 15px;
+}
