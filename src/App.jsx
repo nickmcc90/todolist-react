@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Todoinput from './components/todoinput'
 import Todolist from './components/todolist'
 
@@ -9,6 +9,8 @@ function App() {
     'Kiss Zack good morning',
     'Go out to a house club'
   ])
+
+  const [todoValue, setToDoValue] = useState('');   // we have a dynamic variable associated with the input value
 
   function handleAddTodos (addedTodo) {   // the syntax below allows us to have an array with the previous todos plus a new one, then we set the state of the todo list
     const newTodos = [...todos, addedTodo]
@@ -22,10 +24,19 @@ function App() {
     setTodos(newTodos);
   }
 
+  function handleEditTodo(index) { // we already have access to the todo list, so we only need the index to grab it. This would be the ideal solution instead of passing todoValue and setToDoValue to the todolist, then todocard component.
+    const valueToBeEdited = todos[index]
+    setToDoValue(valueToBeEdited);
+    handleDeleteTodo(index);
+  }
+
+  {/* The arrow funciton runs when a variable changes in the second argument array in useEffect. If there is nothing, the function runs when the page is loaded/refreshed. */}
+  useEffect(() => {}, [])
+
   return (
     <main>
-      <Todoinput handleAddTodos={handleAddTodos}/>    {/* We want to pass the add function to the input component */}
-      <Todolist handleDeleteTodo={handleDeleteTodo} todos={todos}/> { /* We want to pass our dynamic to do list to the list component to display on the page. */}
+      <Todoinput todoValue={todoValue} setToDoValue={setToDoValue} handleAddTodos={handleAddTodos}/>    {/* We want to pass the add function to the input component */}
+      <Todolist handleEditTodo={handleEditTodo} todoValue={todoValue} setToDoValue={setToDoValue} handleDeleteTodo={handleDeleteTodo} todos={todos}/> { /* We want to pass our dynamic to do list to the list component to display on the page. */}
     </main>
   )
 }
@@ -50,14 +61,6 @@ List and card both want access to the to-do list, so we define the list in the p
 to both of them in App.jsx.
 
 
-Here is an important bit. We have not added functionality to the edit button yet. The way that
-I want this to play out is that we take the value (the text) of the todo item we want to edit and place the
-text inside the input bar while deleting the todo off the screen. This is not possible currently because:
-1. The list and card components do not have access to the value inside the input bar.
-So, instead of declaring this input value inside of the todoinput component, we should declare in
-in the overall parent function so that all components can grab it. This will be easy because we can
-send this declared state variable to all components, and destructure them inside of each component.
-
-There is a branch called actual-WIPs where the new code for putting the state variable for the input
-bar in the App.jsx.
+In this version, we also want to fix all of our changes when we refresh the page. We do this using local storage.
+The react hook we use for this is useEffect. In the branch 'localstorage branch', we show this change to the code.
 */

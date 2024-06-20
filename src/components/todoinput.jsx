@@ -3,9 +3,7 @@ import { useState } from "react"
 
 export default function Todoinput(props) {
 
-  const { handleAddTodos } = props  // here we destructure the props to use our add function
-
-  const [todoValue, setToDoValue] = useState('');   // we have a dynamic variable associated with the input value
+  const { handleAddTodos, todoValue, setToDoValue } = props  // here we destructure the props to use our add function and dynamic input bar variable
 
   return (
     <header>
